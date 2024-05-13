@@ -1,0 +1,473 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "API de Gerenciamento de Clientes, Itens e Pedidos",
+    "version": "1.0.0",
+    "title": "Gerenciamento de Clientes, Itens e Pedidos",
+    "termsOfService": "http://example.com/terms/",
+    "contact": {
+      "email": "contato@example.com"
+    },
+    "license": {
+      "name": "Licença de Uso",
+      "url": "http://example.com/license/"
+    }
+  },
+  "host": "api.example.com",
+  "basePath": "/api",
+  "tags": [
+    {
+      "name": "cliente",
+      "description": "Operações relacionadas a Clientes"
+    },
+    {
+      "name": "item",
+      "description": "Operações relacionadas a Itens"
+    },
+    {
+      "name": "pedido",
+      "description": "Operações relacionadas a Pedidos"
+    }
+  ],
+  "schemes": [
+    "https",
+    "http"
+  ],
+  "paths": {
+    "/clientes": {
+      "post": {
+        "tags": ["cliente"],
+        "summary": "Adicionar Cliente",
+        "description": "Adiciona um novo cliente",
+        "operationId": "adicionarCliente",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "cliente",
+            "description": "Dados do Cliente",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/PostCliente"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Cliente adicionado com sucesso",
+            "schema": {
+              "$ref": "#/definitions/GetCliente"
+            }
+          },
+          "500": {
+            "description": "Erro ao adicionar o cliente"
+          }
+        }
+      },
+      "get": {
+        "tags": ["cliente"],
+        "summary": "Buscar Todos Clientes",
+        "description": "Recupera todos os clientes cadastrados",
+        "operationId": "buscarTodosClientes",
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Clientes encontrados",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/GetCliente"
+              }
+            }
+          },
+          "404": {
+            "description": "Clientes não encontrados"
+          },
+          "500": {
+            "description": "Erro ao buscar os clientes"
+          }
+        }
+      }
+    },
+    "/clientes/{cpf}": {
+      "get": {
+        "tags": ["cliente"],
+        "summary": "Buscar Cliente pelo CPF",
+        "description": "Recupera um cliente pelo seu CPF",
+        "operationId": "buscarClientePorCPF",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "cpf",
+            "in": "path",
+            "description": "CPF do Cliente",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Cliente encontrado",
+            "schema": {
+              "$ref": "#/definitions/GetCliente"
+            }
+          },
+          "404": {
+            "description": "Cliente não encontrado"
+          },
+          "500": {
+            "description": "Erro ao buscar o cliente"
+          }
+        }
+      }
+    },
+    "/itens": {
+      "post": {
+        "tags": ["item"],
+        "summary": "Adicionar Item",
+        "description": "Adiciona um novo item",
+        "operationId": "adicionarItem",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "item",
+            "description": "Dados do Item",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/PostItem"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Item adicionado com sucesso",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Sucesso"
+                },
+                "item": {
+                  "$ref": "#/definitions/GetItem"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro ao adicionar o item"
+          }
+        }
+      },
+      "get": {
+        "tags": ["item"],
+        "summary": "Buscar Todos Itens",
+        "description": "Recupera todos os itens cadastrados",
+        "operationId": "buscarTodosItens",
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Itens encontrados",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/GetItem"
+              }
+            }
+          },
+          "500": {
+            "description": "Erro ao buscar os itens"
+          }
+        }
+      }
+    },
+    "/itens/{id}": {
+      "get": {
+        "tags": ["item"],
+        "summary": "Buscar Item por ID",
+        "description": "Recupera um item pelo seu ID",
+        "operationId": "buscarItemPorID",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID do Item",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Item encontrado",
+            "schema": {
+              "$ref": "#/definitions/GetItem"
+            }
+          },
+          "500": {
+            "description": "Erro ao buscar o item"
+          }
+        }
+      }
+    },
+    "/pedidos": {
+      "get": {
+        "tags": ["pedido"],
+        "summary": "Buscar Últimos Pedidos",
+        "description": "Recupera os últimos pedidos registrados",
+        "operationId": "buscarUltimosPedidos",
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Pedidos encontrados",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/GetPedido"
+              }
+            }
+          },
+          "500": {
+            "description": "Erro ao buscar os pedidos"
+          }
+        }
+      },
+      "post": {
+        "tags": ["pedido"],
+        "summary": "Adicionar Pedido",
+        "description": "Adiciona um novo pedido",
+        "operationId": "adicionarPedido",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "pedido",
+            "description": "Dados do Pedido",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/PostPedido"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Pedido adicionado com sucesso",
+            "schema": {
+              "$ref": "#/definitions/GetPedido"
+            }
+          },
+          "500": {
+            "description": "Erro ao adicionar o pedido"
+          }
+        }
+      }
+    },
+    "/pedidos/{id}": {
+      "get": {
+        "tags": ["pedido"],
+        "summary": "Buscar Pedido por ID",
+        "description": "Recupera um pedido pelo seu ID",
+        "operationId": "buscarPedidoPorID",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID do Pedido",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Pedido encontrado",
+            "schema": {
+              "$ref": "#/definitions/GetPedido"
+            }
+          },
+          "500": {
+            "description": "Erro ao buscar o pedido"
+          }
+        }
+      },
+      "patch": {
+        "tags": ["pedido"],
+        "summary": "Alterar Status do Pedido",
+        "description": "Altera o status de um pedido pelo seu ID",
+        "operationId": "alterarStatusDoPedido",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID do Pedido",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "status",
+            "description": "Novo status do Pedido",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Status do Pedido alterado com sucesso",
+            "schema": {
+              "$ref": "#/definitions/GetPedido"
+            }
+          },
+          "500": {
+            "description": "Erro ao alterar o status do pedido"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "PostCliente": {
+      "type": "object",
+      "properties": {
+        "cpf": {
+          "type": "string",
+          "example": "12345678900"
+        },
+        "nome": {
+          "type": "string",
+          "example": "João da Silva"
+        },
+        "email": {
+          "type": "string",
+          "example": "joao@example.com"
+        },
+        "senha": {
+          "type": "string",
+          "example": "senha123"
+        }
+      }
+    },
+    "GetCliente": {
+      "type": "object",
+      "properties": {
+        "cpf": {
+          "type": "string",
+          "example": "12345678900"
+        },
+        "nome": {
+          "type": "string",
+          "example": "João da Silva"
+        },
+        "email": {
+          "type": "string",
+          "example": "joao@example.com"
+        }
+      }
+    },
+    "PostItem": {
+      "type": "object",
+      "properties": {
+        "categoria": {
+          "type": "string",
+          "example": "Lanche"
+        },
+        "nome": {
+          "type": "string",
+          "example": "Hambúrguer com Queijo"
+        },
+        "descricao": {
+          "type": "string",
+          "example": "Delicioso hambúrguer grelhado com queijo derretido"
+        },
+        "preco_unitario": {
+          "type": "number",
+          "format": "float",
+          "example": 39.99
+        }
+      }
+    },
+    "GetItem": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "example": "1"
+        },
+        "categoria": {
+          "type": "string",
+          "example": "Lanche"
+        },
+        "nome": {
+          "type": "string",
+          "example": "Hambúrguer com Queijo"
+        },
+        "descricao": {
+          "type": "string",
+          "example": "Delicioso hambúrguer grelhado com queijo derretido"
+        },
+        "preco_unitario": {
+          "type": "number",
+          "format": "float",
+          "example": 39.99
+        }
+      }
+    },
+    "PostPedido": {
+      "type": "object",
+      "properties": {
+        "cliente_cpf": {
+          "type": "string",
+          "example": "12345678900"
+        },
+        "itens": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/PedidoItem"
+          }
+        }
+      }
+    },
+    "GetPedido": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "example": "1"
+        },
+        "cliente_cpf": {
+          "type": "string",
+          "example": "12345678900"
+        },
+        "itens": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/PedidoItem"
+          }
+        },
+        "status": {
+          "type": "string",
+          "example": "pronto"
+        }
+      }
+    },
+    "PedidoItem": {
+      "type": "object",
+      "properties": {
+        "item_id": {
+          "type": "integer",
+          "example": 1
+        },
+        "quantidade": {
+          "type": "integer",
+          "example": 2
+        }
+      }
+    }
+  }
+}
