@@ -1,16 +1,16 @@
 version: '3'
 services:
-  postgres:
-    image: postgres:latest
+  mongo:
+    image: mongo
+    container_name: mongo
+    restart: always
     environment:
-      POSTGRES_DB: bd-clientes-pedidos
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
     ports:
-      - '5432:5432'
+      - '27017:27017'
     volumes:
-      - postgresdata:/var/lib/postgresql/data
-
+      - mongo_data:/data/db
   app:
     build:
       context: .
@@ -21,9 +21,9 @@ services:
       - .:/app
     command: npm run dev
     depends_on:
-      - postgres
+      - mongo
     environment:
-      DATABASE_URL: postgres://postgres:postgres@postgres:5432/bd-clientes-pedidos
+      MONGO_URI: mongodb://root:root@mongo:27017/
 
 volumes:
-  postgresdata:
+  mongo_data:

@@ -1,4 +1,4 @@
-import { Status } from '../../domain/models/Pedido';
+import { Status } from './Pedido';
 import { v4 as uuidv4 } from 'uuid';
 
 function generateFriendlyID(): string {

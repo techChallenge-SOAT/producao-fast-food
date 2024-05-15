@@ -24,7 +24,7 @@ services:
     depends_on:
       - postgres
     environment:
-      DATABASE_URL: postgres://postgres:postgres@postgres:5432/bd-clientes-pedidos
+      MONGO_URI: mongodb://root:root@localhost:27017/
 
 volumes:
-  postgres_data:
+  mongo_data:
