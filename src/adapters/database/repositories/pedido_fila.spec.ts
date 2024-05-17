@@ -46,7 +46,7 @@ describe('PedidoFila', () => {
   it('should remove a pedido from the fila', async () => {
     const pedido = pedidoFilaStub;
     const novoPedido = await repository.criar(pedido);
-    await repository.remover(novoPedido.id);
+    await repository.remover(novoPedido.id || '');
     expect(repository.listar()).not.toContain(pedido);
   });
 
@@ -61,10 +61,7 @@ describe('PedidoFila', () => {
   it('should update the status of a pedido in the fila', async () => {
     const pedido = pedidoFilaStub;
     const pedidoCriado = await repository.criar(pedido);
-    const pedidoParaAtualizar = Object.assign({} as PedidoFila<Item>, pedido, {
-      status: Status.Preparacao,
-    });
-    await repository.atualizarStatus(pedidoCriado.id, pedidoParaAtualizar);
+    await repository.atualizarStatus(pedidoCriado.id || '', Status.Preparacao);
 
     const lista = await repository.listar();
     const encontrado = lista.find(

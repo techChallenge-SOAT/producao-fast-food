@@ -1,19 +1,25 @@
+import Item from './Item';
 import { Status } from './Pedido';
 import { v4 as uuidv4 } from 'uuid';
 
 function generateFriendlyID(): string {
-  // TODO implementar lógica para gerar um ID amigável
-  return '';
+  const characters =
+    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  let friendlyID = '';
+  for (let i = 0; i < 8; i++) {
+    friendlyID += characters.charAt(
+      Math.floor(Math.random() * characters.length),
+    );
+  }
+  return friendlyID;
 }
 
 function getEstimatedPreparationTime<Item>(itens: Array<Item>): number {
-  // TODO implementar lógica para calcular o tempo estimado de preparo
-  console.log(itens);
-  return 0;
+  return itens.length * 5;
 }
 
 export default class PedidoFila<Item> {
-  id: string;
+  id?: string;
   queue_id: string;
   cliente_cpf: string;
   status: Status;
@@ -37,4 +43,12 @@ export default class PedidoFila<Item> {
     this.itens = itens;
     this.tempo_estimado_preparo_min = getEstimatedPreparationTime<Item>(itens);
   }
+}
+
+export interface PedidoFilaDTO {
+  cliente_cpf: string;
+  status: Status;
+  pedido_id: string;
+  data_pedido: Date;
+  itens: Array<Item>;
 }

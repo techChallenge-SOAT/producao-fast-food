@@ -1,4 +1,5 @@
-import type Item from 'src/application/valueObjects/Item';
+import { Status } from 'src/application/valueObjects/Pedido';
+import type Item from '../../../application/valueObjects/Item';
 import type PedidoFila from '../../../application/valueObjects/PedidoFila';
 import PedidoFilaModel from '../models/pedido_fila';
 class PedidoFilaRepository {
@@ -27,15 +28,12 @@ class PedidoFilaRepository {
     return pedidos.map((pedido) => pedido.toValueObject());
   }
 
-  async atualizarStatus(
-    id: string,
-    novoPedido: PedidoFila<Item>,
-  ): Promise<PedidoFila<Item>> {
+  async atualizarStatus(id: string, status: Status): Promise<PedidoFila<Item>> {
     const pedido = await PedidoFilaModel.findById(id);
     if (!pedido) {
       throw new Error('Pedido não encontrado');
     }
-    pedido.status = novoPedido.status;
+    pedido.status = status;
     await pedido.save();
     return pedido.toValueObject();
   }
