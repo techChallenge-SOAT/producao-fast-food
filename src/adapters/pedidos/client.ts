@@ -1,4 +1,4 @@
-const url = process.env.URL_PEDIDOS_MS || 'http://localhost:3000/pedidos';
+const url = process.env.PEDIDOS_URI || 'http://localhost:3000/pedidos';
 
 class PedidosClient {
   async atualizaStatusPedido(id: string, status: string): Promise<void> {
@@ -7,7 +7,7 @@ class PedidosClient {
     };
 
     try {
-      const response = await fetch(`${url}/${id}`, {
+      const response = await fetch(`${url}/pedidos/${id}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',

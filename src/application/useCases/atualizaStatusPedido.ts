@@ -18,7 +18,7 @@ class AtualizaStatusPedido {
     const updated = await this.repository.atualizarStatus(id, status as Status);
 
     //essa promise não tem await para não bloquear o fluxo de resposta
-    this.pedidoService.atualizaStatusPedido(id, updated.status);
+    this.pedidoService.atualizaStatusPedido(updated.pedido_id, updated.status);
 
     return updated;
   }

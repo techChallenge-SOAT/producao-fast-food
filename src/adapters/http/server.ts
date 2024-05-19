@@ -3,8 +3,7 @@ import swaggerUi from 'swagger-ui-express';
 import swaggerDocs from '../../config/swagger.json';
 import mongoose from 'mongoose';
 import PedidoFilaRepository from '../database/repositories/pedido_fila';
-import PedidoFila from '../../application/valueObjects/PedidoFila';
-import Item from '../../application/valueObjects/Item';
+import { PedidoFilaDTO } from '../../application/valueObjects/PedidoFila';
 import AdicionaPedidoAFila from '../../application/useCases/adicionaPedidoAFila';
 import AtualizaStatusPedido from '../../application/useCases/atualizaStatusPedido';
 import PedidosClient from '../pedidos/client';
@@ -18,14 +17,37 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 app.post('/pedido', async (req, res) => {
   try {
     const repo = new PedidoFilaRepository();
-    const pedido: PedidoFila<Item> = {
-      queue_id: req.body.queue_id,
+    // Validating status parameter
+    if (!req.body.status) {
+      return res.status(400).json({ message: 'Status parameter is required' });
+    }
+
+    // Validating id parameter
+    if (!req.body.id) {
+      return res
+        .status(400)
+        .json({ message: 'Pedido ID parameter is required' });
+    }
+
+    // Validating data_pedido and itens parameters
+    if (!req.body.data_pedido || !req.body.itens) {
+      return res
+        .status(400)
+        .json({ message: 'Data Pedido and Itens parameters are required' });
+    }
+
+    if (req.body.itens.length === 0) {
+      return res
+        .status(400)
+        .json({ message: 'Itens parameter must have at least one item' });
+    }
+
+    const pedido: PedidoFilaDTO = {
       cliente_cpf: req.body.cliente_cpf,
       status: req.body.status,
-      pedido_id: req.body.pedido_id,
+      id: req.body.id,
       data_pedido: req.body.data_pedido,
       itens: req.body.itens,
-      tempo_estimado_preparo_min: req.body.tempo_estimado_preparo_min,
     };
     const useCase = new AdicionaPedidoAFila(repo);
     const created = await useCase.execute(pedido);

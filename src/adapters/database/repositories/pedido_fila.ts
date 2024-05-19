@@ -20,7 +20,7 @@ class PedidoFilaRepository {
   }
 
   async listar(): Promise<PedidoFila<Item>[]> {
-    const pedidos = await PedidoFilaModel.find({ status: { $ne: 'concluido' } })
+    const pedidos = await PedidoFilaModel.find({ status: { $ne: 'pronto' } })
       .sort({ data_pedido: 1 })
       .limit(10)
       .exec();

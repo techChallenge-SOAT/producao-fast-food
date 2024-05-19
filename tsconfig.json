@@ -7,17 +7,13 @@
     "strict": true,
     "skipLibCheck": true,
     "lib": ["es2017", "dom", "es2018.promise"],
-    "paths": {
-      "@db/*": ["docs/bd/*"],
-      "@docs/*": ["./docs/*"]
-    },
     "baseUrl": "./",
     "outDir": "./dist/src",
     "rootDir": "./src",
     "resolveJsonModule": true
   },
   "exclude": ["node_modules"],
-  "include": ["./typings/*.d.ts", "src/**/*.ts"],
+  "include": ["./typings/*.d.ts", "src/**/*.ts", "jest.config.js"],
   "typeAcquisition": {
     "enable": false
   }

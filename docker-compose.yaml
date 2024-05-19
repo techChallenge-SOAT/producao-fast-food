@@ -11,20 +11,33 @@ services:
       - '27017:27017'
     volumes:
       - mongo_data:/data/db
-
+    networks:
+      - producao-network
   app:
+    container_name: producao
     build:
       context: .
       dockerfile: Dockerfile
     ports:
-      - '3000:3000'
+      - '4000:4000'
     volumes:
       - .:/app
-    command: npm start
+    command: npm run dev
     depends_on:
-      - postgres
+      - mongo
     environment:
-      MONGO_URI: mongodb://root:root@localhost:27017/
+      MONGO_URI: mongodb://root:root@mongo:27017/
+      PEDIDOS_URI: http://pedidos:3000
+    networks:
+      - producao-network
+      - shared_network
 
 volumes:
   mongo_data:
+
+networks:
+  producao-network:
+    driver: bridge
+  shared_network:
+    name: shared-network
+    external: true
