@@ -8,6 +8,11 @@ jest.mock('mongoose', () => {
     connection: {
       dropDatabase: jest.fn(),
       close: jest.fn(),
+      collections: {
+        key: {
+          deleteMany: jest.fn(),
+        },
+      },
     },
   };
 });
@@ -18,7 +23,6 @@ const mockURI = 'uri';
 describe('db-handler', () => {
   it('should call mongoose.connect with the correct uri', async () => {
     MongoMemoryServer.create = jest.fn().mockImplementation(() => {
-      console.log('here I am at create');
       return {
         getUri: jest.fn().mockReturnValue(mockURI),
         start: jest.fn().mockResolvedValue(''),
@@ -41,7 +45,9 @@ describe('db-handler', () => {
     const db = new dbHandler();
     await db.connect();
     await db.clear();
-    expect(mongoose.connection.dropDatabase).toHaveBeenCalled();
+    expect(
+      mongoose.connection.collections['key'].deleteMany,
+    ).toHaveBeenCalled();
   });
 
   it('should call mongoose.connection.close', async () => {
@@ -56,5 +62,15 @@ describe('db-handler', () => {
     await db.connect();
     await db.close();
     expect(mongoose.connection.close).toHaveBeenCalled();
+  });
+
+  it('should throw error if close is called before connect', async () => {
+    const db = new dbHandler();
+    await expect(db.close()).rejects.toThrow('mongod is not defined');
+  });
+
+  it('should throw error if clear is called before connect', async () => {
+    const db = new dbHandler();
+    await expect(db.clear()).rejects.toThrow('mongod is not defined');
   });
 });

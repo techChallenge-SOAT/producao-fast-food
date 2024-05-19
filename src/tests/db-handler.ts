@@ -1,5 +1,3 @@
-// tests/db-handler.js
-
 import mongoose from 'mongoose';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 
@@ -8,7 +6,6 @@ export default class MockDatabase {
   async connect() {
     this.mongod = await MongoMemoryServer.create();
     const uri = this.mongod.getUri();
-    console.log('uri', uri);
     await mongoose.connect(uri, {});
   }
   async close() {

@@ -72,4 +72,16 @@ describe('PedidoFila', () => {
     }
     expect(encontrado.status).toBe(Status.Preparacao);
   });
+
+  it('should throw if pedido is not found when trying to update', async () => {
+    await expect(
+      repository.atualizarStatus('4edd40c86762e0fb12000003', Status.Preparacao),
+    ).rejects.toThrowError('Pedido não encontrado');
+  });
+
+  it('should throw if pedido is not found when trying to remove', async () => {
+    await expect(
+      repository.remover('4edd40c86762e0fb12000003'),
+    ).rejects.toThrowError('Pedido não encontrado');
+  });
 });

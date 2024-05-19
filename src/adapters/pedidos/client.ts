@@ -1,7 +1,7 @@
 const url = process.env.PEDIDOS_URI || 'http://localhost:3000/pedidos';
 
 class PedidosClient {
-  async atualizaStatusPedido(id: string, status: string): Promise<void> {
+  async atualizaStatusPedido(id: string, status: string): Promise<unknown> {
     const statusUpdate = {
       status: status,
     };
@@ -19,12 +19,10 @@ class PedidosClient {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
 
-      const responseData = await response.json();
-      console.log('pedidos client', responseData);
+      return response.json();
     } catch (error) {
       console.error('Error:', error);
-      // Vai engolir o erro e não vai lançar para o controller
-      // throw error;
+      throw error;
     }
   }
 }
