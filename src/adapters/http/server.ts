@@ -53,6 +53,7 @@ app.post('/pedido', async (req, res) => {
     const created = await useCase.execute(pedido);
     return res.status(200).json(created);
   } catch (error) {
+    console.error(error);
     return res.status(500).json(error);
   }
 });
@@ -70,6 +71,9 @@ app.get('/fila', async (req, res) => {
 
 app.patch('/pedido/:id', async (req, res) => {
   try {
+    if (!req.body || !req.body.status) {
+      return res.status(400).json({ message: 'Status parameter is required' });
+    }
     const repo = new PedidoFilaRepository();
     const status = req.body.status;
     const service = new PedidosClient();
@@ -77,16 +81,24 @@ app.patch('/pedido/:id', async (req, res) => {
     const pedidoAtualizado = await useCase.execute(req.params.id, status);
     return res.status(200).json(pedidoAtualizado);
   } catch (error) {
-    console.error(error);
+    //TODO: melhorar isso aqui colocando exceptions customizadas
+    if (/Status inválido/.test((error as Error).message)) {
+      return res.status(400).json({ message: 'Status inválido' });
+    }
+    if ((error as Error).message === 'Pedido não encontrado') {
+      return res.status(404).json({ message: 'Pedido não encontrado' });
+    }
     res.status(500).json({ message: 'Erro ao atualizar pedido' });
   }
 });
 
 app.get('/health', (req, res) => {
   if (mongoose.connection.readyState !== 1) {
-    return res.status(500).send('Microsserviço de Produção Fora do ar');
+    return res
+      .status(500)
+      .json({ message: 'Microsserviço de Produção Fora do ar' });
   }
-  return res.status(200).send('Microsserviço de Produção');
+  return res.status(200).json({ message: 'Microsserviço de Produção' });
 });
 
 export { app };

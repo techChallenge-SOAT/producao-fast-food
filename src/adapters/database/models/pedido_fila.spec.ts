@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import PedidoFilaModel from './pedido_fila';
-import dbHandler from '../../../tests/db-handler';
+import dbHandler from '../../../tests/utils/db-handler';
 import { Status } from '../../../application/valueObjects/Pedido';
 
 const db = new dbHandler();

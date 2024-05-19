@@ -20,6 +20,9 @@ export default class MockDatabase {
     if (!this.mongod) {
       throw new Error('mongod is not defined');
     }
+    if (mongoose.connection.readyState === 0) {
+      return;
+    }
     const collections = mongoose.connection.collections;
     for (const key in collections) {
       const collection = collections[key];

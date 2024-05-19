@@ -13,7 +13,7 @@
     "resolveJsonModule": true
   },
   "exclude": ["node_modules"],
-  "include": ["./typings/*.d.ts", "src/**/*.ts", "jest.config.js"],
+  "include": ["./typings/*.d.ts", "src/**/*.ts", "jest.config.js", "jest.setup.js"],
   "typeAcquisition": {
     "enable": false
   }

@@ -2,7 +2,7 @@ import Repository from './pedido_fila';
 import type PedidoFila from '../../../application/valueObjects/PedidoFila';
 import type Item from '../../../application/valueObjects/Item';
 import { Status } from '../../../application/valueObjects/Pedido';
-import dbHandler from '../../../tests/db-handler';
+import dbHandler from '../../../tests/utils/db-handler';
 
 const fixedDate = new Date('2022-01-01T12:00:00');
 
