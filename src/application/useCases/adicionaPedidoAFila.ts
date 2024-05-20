@@ -11,7 +11,7 @@ class AdicionaPedidoAFila {
       pedido.cliente_cpf,
       pedido.data_pedido,
       pedido.status,
-      pedido.pedido_id,
+      pedido.id,
       pedido.itens,
     );
     return await this.repository.criar(pedidoInstanciado);

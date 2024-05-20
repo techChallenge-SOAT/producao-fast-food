@@ -3,7 +3,7 @@ import { Status } from '../../../application/valueObjects/Pedido';
 import type Item from '../../../application/valueObjects/Item';
 import type PedidoFila from '../../../application/valueObjects/PedidoFila';
 
-interface IItem {
+export interface IItem {
   _id: string;
   categoria: string;
   nome: string;
@@ -12,7 +12,7 @@ interface IItem {
   toValueObject: () => Item;
 }
 
-interface IPedidoFila extends Document {
+export interface IPedidoFila extends Document {
   _id: string;
   queue_id: string;
   cliente_cpf: string;

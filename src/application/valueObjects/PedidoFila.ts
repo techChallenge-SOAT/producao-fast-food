@@ -48,7 +48,7 @@ export default class PedidoFila<Item> {
 export interface PedidoFilaDTO {
   cliente_cpf: string;
   status: Status;
-  pedido_id: string;
+  id: string;
   data_pedido: Date;
   itens: Array<Item>;
 }

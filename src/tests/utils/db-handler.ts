@@ -1,5 +1,3 @@
-// tests/db-handler.js
-
 import mongoose from 'mongoose';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 
@@ -21,6 +19,9 @@ export default class MockDatabase {
   async clear() {
     if (!this.mongod) {
       throw new Error('mongod is not defined');
+    }
+    if (mongoose.connection.readyState === 0) {
+      return;
     }
     const collections = mongoose.connection.collections;
     for (const key in collections) {

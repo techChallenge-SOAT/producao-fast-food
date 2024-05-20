@@ -2,7 +2,7 @@ import Repository from './pedido_fila';
 import type PedidoFila from '../../../application/valueObjects/PedidoFila';
 import type Item from '../../../application/valueObjects/Item';
 import { Status } from '../../../application/valueObjects/Pedido';
-import dbHandler from '../../../tests/db-handler';
+import dbHandler from '../../../tests/utils/db-handler';
 
 const fixedDate = new Date('2022-01-01T12:00:00');
 
@@ -71,5 +71,17 @@ describe('PedidoFila', () => {
       throw new Error('Pedido não encontrado');
     }
     expect(encontrado.status).toBe(Status.Preparacao);
+  });
+
+  it('should throw if pedido is not found when trying to update', async () => {
+    await expect(
+      repository.atualizarStatus('4edd40c86762e0fb12000003', Status.Preparacao),
+    ).rejects.toThrowError('Pedido não encontrado');
+  });
+
+  it('should throw if pedido is not found when trying to remove', async () => {
+    await expect(
+      repository.remover('4edd40c86762e0fb12000003'),
+    ).rejects.toThrowError('Pedido não encontrado');
   });
 });

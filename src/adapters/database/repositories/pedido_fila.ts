@@ -1,4 +1,4 @@
-import { Status } from 'src/application/valueObjects/Pedido';
+import { Status } from '../../../application/valueObjects/Pedido';
 import type Item from '../../../application/valueObjects/Item';
 import type PedidoFila from '../../../application/valueObjects/PedidoFila';
 import PedidoFilaModel from '../models/pedido_fila';
@@ -20,7 +20,7 @@ class PedidoFilaRepository {
   }
 
   async listar(): Promise<PedidoFila<Item>[]> {
-    const pedidos = await PedidoFilaModel.find({ status: { $ne: 'concluido' } })
+    const pedidos = await PedidoFilaModel.find({ status: { $ne: 'pronto' } })
       .sort({ data_pedido: 1 })
       .limit(10)
       .exec();
@@ -29,6 +29,9 @@ class PedidoFilaRepository {
   }
 
   async atualizarStatus(id: string, status: Status): Promise<PedidoFila<Item>> {
+    if (!Object.values(Status).includes(status)) {
+      throw new Error(`Status inválido ${status}`);
+    }
     const pedido = await PedidoFilaModel.findById(id);
     if (!pedido) {
       throw new Error('Pedido não encontrado');
