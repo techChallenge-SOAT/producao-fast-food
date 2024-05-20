@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: producao-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: producao-fast-food
+  template:
+    metadata:
+      labels:
+        app: producao-fast-food
+    spec:
+      containers:
+        - name: producao-fast-food
+          image: public.ecr.aws/o9d4t2y8/pedidos-fast-food:latest
+          imagePullPolicy: Never
+          resources:
+            limits:
+              cpu: "1"
+              memory: "1Gi"
+          ports:
+            - containerPort: 4000
+          env:
+            - name: MONGO_URI
+              value: mongodb://root:root@host.docker.internal:27017/
+            - name: PEDIDOS_URI
+              value: http://pedidos-fast-food-service:3000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: producao-fast-food-service
+spec:
+  selector:
+    app: producao-fast-food
+  ports:
+    - protocol: TCP
+      port: 4000
+      targetPort: 4000
+  type: NodePort
+  

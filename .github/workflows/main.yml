@@ -5,6 +5,10 @@ on:
       branches:
         - main
 
+permissions:
+  id-token: write # This is required for requesting the JWT
+  contents: read  # This is required for actions/checkout
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -15,20 +19,6 @@ jobs:
       with:
         node-version: '20'
     - run: npm ci
-
-  deploy-production:
-    runs-on: ubuntu-latest
-
-    if: github.ref == 'refs/heads/main'
-    environment:
-      name: Prod
-    needs: build
-
-    steps:
-      - name: Deploy
-        shell: bash
-        run:
-          echo "Deploy Prod"
 
   deploy-aws:
     runs-on: ubuntu-latest
@@ -48,22 +38,23 @@ jobs:
         id: aws-credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.AWS_REGION }}
+          aws-region: us-east-1
+          role-to-assume: arn:aws:iam::103447461627:role/3soat-fiap-role
 
       - name: Login to Amazon ECR
         id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v1
+        uses: aws-actions/amazon-ecr-login@v2
+        with:
+          registry-type: public
 
-      - name: Deploy-AWS
-        id: build-image
+      - name: Build, tag, and push docker image to Amazon ECR Public
         env:
-          aws-region: ${{ secrets.AWS_REGION }}
-          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          ECR_REPOSITORY: backend-fast-food
+          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          REGISTRY_ALIAS: o9d4t2y8
+          REPOSITORY: producao-fast-food
           IMAGE_TAG: ${{ github.sha }}
         run: |
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-          echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+          docker build -t $REGISTRY/$REGISTRY_ALIAS/$REPOSITORY:$IMAGE_TAG .
+          docker push $REGISTRY/$REGISTRY_ALIAS/$REPOSITORY:$IMAGE_TAG
+          docker tag $REGISTRY/$REGISTRY_ALIAS/$REPOSITORY:$IMAGE_TAG $REGISTRY/$REGISTRY_ALIAS/$REPOSITORY:latest
+          docker push $REGISTRY/$REGISTRY_ALIAS/$REPOSITORY:latest
