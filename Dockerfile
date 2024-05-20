@@ -2,7 +2,7 @@ FROM node:latest
 
 WORKDIR /app
 COPY package*.json tsconfig.json /app/
-RUN npm install
+RUN npm install --ignore-scripts
 COPY . .
 RUN npm run build
 
