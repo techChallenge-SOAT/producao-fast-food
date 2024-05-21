@@ -14,8 +14,7 @@ spec:
     spec:
       containers:
         - name: producao-fast-food
-          image: public.ecr.aws/o9d4t2y8/pedidos-fast-food:latest
-          imagePullPolicy: Never
+          image: public.ecr.aws/o9d4t2y8/producao-fast-food:latest
           resources:
             limits:
               cpu: "1"
