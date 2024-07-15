@@ -23,7 +23,7 @@ describe('Client de Pedidos', () => {
     await pedidosClient.atualizaStatusPedido(id, status);
 
     expect(fetch).toHaveBeenCalledWith(
-      `http://localhost:3000/pedidos/pedidos/${id}`,
+      `http://localhost:3000/pedidos/${id}`,
       expect.any(Object),
     );
   });

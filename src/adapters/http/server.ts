@@ -17,19 +17,16 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 app.post('/pedido', async (req, res) => {
   try {
     const repo = new PedidoFilaRepository();
-    // Validating status parameter
     if (!req.body.status) {
       return res.status(400).json({ message: 'Status parameter is required' });
     }
 
-    // Validating id parameter
     if (!req.body.id) {
       return res
         .status(400)
         .json({ message: 'Pedido ID parameter is required' });
     }
 
-    // Validating data_pedido and itens parameters
     if (!req.body.data_pedido || !req.body.itens) {
       return res
         .status(400)

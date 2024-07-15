@@ -1,4 +1,4 @@
-const url = process.env.PEDIDOS_URI || 'http://localhost:3000/pedidos';
+const url = process.env.PEDIDOS_URI || 'http://localhost:3000';
 
 class PedidosClient {
   async atualizaStatusPedido(id: string, status: string): Promise<unknown> {

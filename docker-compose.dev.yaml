@@ -11,12 +11,16 @@ services:
       - '27017:27017'
     volumes:
       - mongo_data:/data/db
+    networks:
+      - producao-network
+      
   app:
+    container_name: producao
     build:
       context: .
       dockerfile: Dockerfile
     ports:
-      - '3000:3000'
+      - '4000:4000'
     volumes:
       - .:/app
     command: npm run dev
@@ -24,6 +28,22 @@ services:
       - mongo
     environment:
       MONGO_URI: mongodb://root:root@mongo:27017/
+      AWS_REGION: us-east-1
+      AWS_ACCESS_KEY_ID:  
+      AWS_SECRET_ACCESS_KEY:  
+      PRODUCAO_FAST_FOOD_URL: http://localhost:4000
+      SQS_RECEIVE_TO_PRODUCTION: https://sqs.us-east-1.amazonaws.com/<account-id>/receber-para-cozinha-queue
+    networks:
+      - producao-network
+      - shared_network
+
 
 volumes:
   mongo_data:
+
+networks:
+  producao-network:
+    driver: bridge
+  shared_network:
+    name: shared-network
+    external: true
