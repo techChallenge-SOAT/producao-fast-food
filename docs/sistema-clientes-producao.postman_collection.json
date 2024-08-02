@@ -1,87 +1,74 @@
 {
-	"info": {
-		"_postman_id": "aecd60f9-46e3-49fb-b7a8-7432fa826048",
-		"name": "sistema-clientes-producao",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "27482149",
-		"_collection_link": "https://n1wishlist.postman.co/workspace/Sistema-de-Pedidos~e7a632a3-b862-430b-91b4-46b39e39d7b2/collection/27482149-aecd60f9-46e3-49fb-b7a8-7432fa826048?action=share&source=collection_link&creator=27482149"
-	},
-	"item": [
-		{
-			"name": "Adiciona Pedido à fila",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n  \"cliente_cpf\": \"12345678910\",\n  \"data_pedido\": \"2024-05-17T18:49:23.481Z\",\n  \"status\": \"pago\",\n  \"pedido_id\": \"2\",\n  \"itens\": [\n    {\n      \"id\": \"id\",\n      \"categoria\": \"batata frita\",\n      \"nome\": \"batata frita\",\n      \"descricao\": \"batata frita\",\n      \"preco_unitario\": 1000\n    }\n  ]\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:4000/pedido",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "4000",
-					"path": [
-						"pedido"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Lista fila",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:4000/fila",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "4000",
-					"path": [
-						"fila"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Atualiza Status Pedido",
-			"request": {
-				"method": "PATCH",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"status\": \"pronto\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:4000/pedido/{{id}}",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "4000",
-					"path": [
-						"pedido",
-						"{{id}}"
-					]
-				}
-			},
-			"response": []
-		}
-	]
+  "info": {
+    "_postman_id": "aecd60f9-46e3-49fb-b7a8-7432fa826048",
+    "name": "sistema-clientes-producao",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "27482149",
+    "_collection_link": "https://n1wishlist.postman.co/workspace/Sistema-de-Pedidos~e7a632a3-b862-430b-91b4-46b39e39d7b2/collection/27482149-aecd60f9-46e3-49fb-b7a8-7432fa826048?action=share&source=collection_link&creator=27482149"
+  },
+  "item": [
+    {
+      "name": "Adiciona Pedido à fila",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"cliente_cpf\": \"12345678910\",\n  \"data_pedido\": \"2024-05-17T18:49:23.481Z\",\n  \"status\": \"pago\",\n  \"pedido_id\": \"2\",\n  \"itens\": [\n    {\n      \"id\": \"id\",\n      \"categoria\": \"batata frita\",\n      \"nome\": \"batata frita\",\n      \"descricao\": \"batata frita\",\n      \"preco_unitario\": 1000\n    }\n  ]\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:4000/pedido",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "4000",
+          "path": ["pedido"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Lista fila",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:4000/fila",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "4000",
+          "path": ["fila"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Atualiza Status Pedido",
+      "request": {
+        "method": "PATCH",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"status\": \"pronto\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:4000/pedido/{{id}}",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "4000",
+          "path": ["pedido", "{{id}}"]
+        }
+      },
+      "response": []
+    }
+  ]
 }

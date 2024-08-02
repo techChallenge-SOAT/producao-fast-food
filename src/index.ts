@@ -2,7 +2,7 @@ import { app } from './adapters/http/server';
 import connectDatabase from './adapters/database/connector';
 import { pollQueue } from './application/useCases/ProcessarFilaPedido';
 
-pollQueue().catch(error => {
+pollQueue().catch((error) => {
   console.error('Error starting the SQS polling:', error);
 });
 
