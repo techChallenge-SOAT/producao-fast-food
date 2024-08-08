@@ -29,10 +29,7 @@
       "description": "Operações relacionadas a Pedidos"
     }
   ],
-  "schemes": [
-    "https",
-    "http"
-  ],
+  "schemes": ["https", "http"],
   "paths": {
     "/clientes": {
       "post": {

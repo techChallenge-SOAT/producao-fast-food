@@ -17,8 +17,8 @@ spec:
           image: public.ecr.aws/o9d4t2y8/producao-fast-food:latest
           resources:
             limits:
-              cpu: "1"
-              memory: "1Gi"
+              cpu: '1'
+              memory: '1Gi'
           ports:
             - containerPort: 4000
           env:
@@ -39,4 +39,3 @@ spec:
       port: 4000
       targetPort: 4000
   type: NodePort
-  
